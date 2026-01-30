@@ -1,0 +1,32 @@
+﻿@using UrlShortening.Web.Services
+
+@inject CodeService CodeService
+
+@page "/urlmapping/create"
+
+<h3>Create URL Mapping</h3>
+
+<input @bind="originalUrl"
+       placeholder="https://example.com" />
+
+<button @onclick="CreateCode">Create code</button>
+
+@if (code is not null)
+{
+    <p>
+        Generated code:
+        <a href="@(code)" target="_blank">@(code)</a>
+    </p>
+}
+
+@code {
+    private string originalUrl = string.Empty;
+    private string? code;
+
+    private async Task CreateCode()
+    {
+        var result = await CodeService.CreateAsync(originalUrl);
+
+        code = result?.Code;
+    }
+}
